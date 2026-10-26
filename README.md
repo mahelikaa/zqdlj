@@ -2,7 +2,7 @@
 
 Compares GB national wind generation forecasts with actual generation for January 2026, so a day-ahead power buyer can see the forecast they would have had at decision time and how far off it typically is.
 
-**Live app:** _LINK_ · **Data:** Elexon BMRS [FUELHH](https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/FUELHH/stream) (actuals, `fuelType=WIND`) and [WINDFOR](https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/WINDFOR/stream) (forecasts)
+**Live app:** https://wind-forecast-monitor-mu.vercel.app (API: https://wind-forecast-monitor-api.vercel.app/docs) · **Data:** Elexon BMRS [FUELHH](https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/FUELHH/stream) (actuals, `fuelType=WIND`) and [WINDFOR](https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/WINDFOR/stream) (forecasts)
 
 ## How it works
 
