@@ -88,11 +88,19 @@ def accuracy_by_horizon(
     forecasts: pd.DataFrame,
     horizons: list[float],
 ) -> list[dict]:
-    """Calculate error metrics for each forecast horizon."""
+    """Calculate error metrics for each forecast horizon, over the same target hours.
+
+    Forecast runs don't always reach the longest horizons, so some hours have no forecast
+    there. Only hours with a forecast at every horizon are used, so horizons are compared
+    like for like.
+    """
+    compared = {h: compare(actuals, forecasts, h) for h in horizons}
+    common = set.intersection(*(set(c["startTime"]) for c in compared.values()))
+
     return [
         {
             "horizon": h,
-            **compute_metrics(compare(actuals, forecasts, h)["error"]),
+            **compute_metrics(c.loc[c["startTime"].isin(common), "error"]),
         }
-        for h in horizons
+        for h, c in compared.items()
     ]

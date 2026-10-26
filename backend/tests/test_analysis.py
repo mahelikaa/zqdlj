@@ -3,7 +3,7 @@ import math
 import pandas as pd
 import pytest
 
-from app.analysis import compare, compute_metrics, select_forecasts
+from app.analysis import accuracy_by_horizon, compare, compute_metrics, select_forecasts
 
 T = pd.Timestamp("2026-01-10T12:00:00Z")
 
@@ -75,3 +75,15 @@ def test_compare_joins_on_hour_and_computes_error():
     compared = compare(actuals, REAL_EXAMPLE, 40)
     assert len(compared) == 1  # the half-hour actual has no forecast
     assert compared.loc[0, "error"] == 8492 - 7777
+
+
+def test_accuracy_by_horizon_uses_hours_available_at_every_horizon():
+    later = T + pd.Timedelta(hours=1)
+    forecasts = pd.concat(
+        [forecasts_for_target([(30, 1100), (10, 1050)]), forecasts_for_target([(10, 2000)], later)]
+    )
+    actuals = pd.DataFrame({"startTime": [T, later], "generation": [1000, 1000]})
+    rows = accuracy_by_horizon(actuals, forecasts, [0, 20])
+    # `later` has no forecast 20h ahead, so it is left out at 0h too.
+    assert [row["count"] for row in rows] == [1, 1]
+    assert [row["bias"] for row in rows] == [pytest.approx(50), pytest.approx(100)]

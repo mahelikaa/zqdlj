@@ -84,7 +84,9 @@ export default function App() {
         <section className="panel">
           <h2>How accuracy changes with horizon</h2>
           <p className="muted">
-            Error over the selected dates for every horizon. Click the chart to jump the slider to a horizon.
+            Error for every horizon, over the {accuracy[0]?.count ?? 0} hours in the selected dates that have a
+            forecast at every horizon (forecasts don't always reach 48h ahead), so horizons are compared like for
+            like. Click the chart to jump the slider to a horizon.
           </p>
           <HorizonChart rows={accuracy} horizon={horizon} onSelectHorizon={setHorizon} />
         </section>
